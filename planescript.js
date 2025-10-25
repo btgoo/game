@@ -58,6 +58,8 @@ window.onload = function () {
     requestAnimationFrame(gameLoop);
     setInterval(spawnEnemy, spawnInterval);
     setInterval(spawnHP, 40000);
+    enemyTimerId = setInterval(spawnEnemy, spawnInterval);
+    hpTimerId = setInterval(spawnHP, 40000);
 }
 
 function spawnEnemy() {
@@ -75,7 +77,7 @@ function spawnHP() {
     const x = boardWidth;
     const y = Math.random() * (boardHeight - height);
     const speed = 1 + Math.random() * 3;
-    HP.push({x, y, width, height, speed});
+    HP.push({ x, y, width, height, speed });
 }
 
 function update() {
@@ -83,7 +85,7 @@ function update() {
         e.x -= e.speed;
     }
     enemies = enemies.filter((e) => e.x + e.width > 0);
-    
+
     for (let h of HP) {
         h.x -= h.speed;
     }
@@ -96,59 +98,75 @@ function update() {
 function draw() {
     context.clearRect(0, 0, boardWidth, boardHeight);
     context.drawImage(planeImg, plane.x, plane.y, plane.width, plane.height);
-    
+
     for (let e of enemies) {
         context.drawImage(enemyImg, e.x, e.y, e.width, e.height);
     }
-    
+
     for (let h of HP) {
         context.drawImage(hpImg, h.x, h.y, h.width, h.height);
     }
 
     if (statusEl) statusEl.innerText = `HP: ${hitPoint}`;
-    }
+}
+
+function circleFor(obj, shrink = 0.3) {
+  const r = (Math.min(obj.width, obj.height) * (1 - shrink)) / 2;
+  return {
+    cx: obj.x + obj.width  / 2,
+    cy: obj.y + obj.height / 2,
+    r
+  };
+}
+
+function circlesOverlap(a, b) {
+  const dx = a.cx - b.cx;
+  const dy = a.cy - b.cy;
+  const rr = (a.r + b.r) * (a.r + b.r);
+  return dx*dx + dy*dy <= rr;
+}
 
 
 function lose_hp() {
-    for (let e of enemies) {
-        // Check for rectangle collision (axis-aligned bounding box)
-        const collision =
-            plane.x < e.x + e.width &&         // plane’s left is left of enemy’s right
-            plane.x + plane.width > e.x &&     // plane’s right is right of enemy’s left
-            plane.y < e.y + e.height &&        // plane’s top is above enemy’s bottom
-            plane.y + plane.height > e.y;      // plane’s bottom is below enemy’s top
+  const pc = circleFor(plane, 0.35);   // 35% shrink for plane
 
-        if (collision) {
-            hitPoint -= 20;
-
-            // Optional: remove enemy after collision
-            enemies = enemies.filter(enemy => enemy !== e);
-
-            // Optional: stop HP going below zero
-            if (hitPoint < 0) hitPoint = 0;
-
-            // Optional: end game when HP = 0
-            if (hitPoint === 0) {
-                alert("Game Over!");
-                window.location.reload();
-            }
-        }
+  for (let e of enemies) {
+    const ec = circleFor(e, 0.25);     // 25% shrink for enemies
+    if (circlesOverlap(pc, ec)) {
+      hitPoint -= 20;
+      enemies = enemies.filter(enemy => enemy !== e);
+      if (hitPoint < 0) hitPoint = 0;
+      if (hitPoint === 0) {
+        alert("Game Over!");
+        window.location.reload();
+      }
     }
+  }
 }
 
 function healHP() {
-    for (let h of HP) {
-        const collected =
-            plane.x < h.x + h.width &&
-            plane.x + plane.width > h.x &&
-            plane.y < h.y + h.height &&
-            plane.y + plane.height > h.y;
-        if (collected) {
-            hitPoint += 20; // heal the plane
-            HP = HP.filter(x => x !== h);
-        }
+  const pc = circleFor(plane, 0.35);
+  for (let h of HP) {
+    const hc = circleFor(h, 0.25);
+    if (circlesOverlap(pc, hc)) {
+      hitPoint += 20;
+      HP = HP.filter(x => x !== h);
     }
+  }
 }
+
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        clearInterval(enemyTimerId);
+        clearInterval(hpTimerId);
+    } else {
+        // small grace delay prevents an instant burst on return
+        setTimeout(() => {
+            enemyTimerId = setInterval(spawnEnemy, spawnInterval);
+            hpTimerId = setInterval(spawnHP, 40000);
+        }, 300);
+    }
+});
 
 function gameLoop() {
     update();
