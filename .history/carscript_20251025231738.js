@@ -223,7 +223,7 @@ function checkCollisions() {
   
       if (horizontalOverlap && verticalOverlap) {
         spawnExplosion(car.x, car.y, car.width, car.height);
-        setTimeout(setGameOver, 80);
+        setTimeout(setGameOver, 50);
       }
     });
 }
@@ -231,9 +231,8 @@ function checkCollisions() {
 function setGameOver(){
     gameRunning = false;
     gameOver = true
-    drawScene();
 }
-
+ 
 function spawnObstacle() {
     const lane = Math.floor(Math.random() * NUM_LANES);
     const imgIndex = Math.floor(Math.random() * obstacleImgs.length);

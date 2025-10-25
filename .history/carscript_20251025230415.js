@@ -20,6 +20,7 @@ const obstacleData = [
     {src: "./assets/car_images/tumbleweed.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
     {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
     {src: "./assets/car_images/green_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
+    {src: "./assets/car_images/bright_blue_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
 ];
 
 let obstacleImgs = [];
@@ -223,15 +224,10 @@ function checkCollisions() {
   
       if (horizontalOverlap && verticalOverlap) {
         spawnExplosion(car.x, car.y, car.width, car.height);
-        setTimeout(setGameOver, 80);
+        gameRunning = false;
+        gameOver = true
       }
     });
-}
-
-function setGameOver(){
-    gameRunning = false;
-    gameOver = true
-    drawScene();
 }
 
 function spawnObstacle() {

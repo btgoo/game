@@ -223,7 +223,7 @@ function checkCollisions() {
   
       if (horizontalOverlap && verticalOverlap) {
         spawnExplosion(car.x, car.y, car.width, car.height);
-        setTimeout(setGameOver, 80);
+        setTimeout(setGameOver, 70);
       }
     });
 }

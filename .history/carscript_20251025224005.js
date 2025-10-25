@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
-const PLAYER_WIDTH = 160;
+const PLAYER_WIDTH = 183;
 const PLAYER_HEIGHT = 90;
 const CACTI_WIDTH = 78;
 const CACTI_Height = 90;
@@ -14,12 +14,14 @@ const obstacleData = [
     {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
     {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
+    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
     {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
+    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/tumbleweed.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
     {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
-    {src: "./assets/car_images/green_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
+    {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
 ];
 
 let obstacleImgs = [];
@@ -32,7 +34,7 @@ obstacleData.forEach(data => {
 });
 
 const explosionImg = new Image();
-explosionImg.src = "./assets/car_images/explosion_sprite.png";
+explosionImg.src = "./assets/car_images/explosion.png";
 
 let explosions = [];
 
@@ -223,15 +225,10 @@ function checkCollisions() {
   
       if (horizontalOverlap && verticalOverlap) {
         spawnExplosion(car.x, car.y, car.width, car.height);
-        setTimeout(setGameOver, 80);
+        gameOver = true;
+        gameRunning = false;
       }
     });
-}
-
-function setGameOver(){
-    gameRunning = false;
-    gameOver = true
-    drawScene();
 }
 
 function spawnObstacle() {
@@ -265,19 +262,19 @@ function spawnExplosion(x, y, width, height) {
 
 window.addEventListener("keydown", (e) => {
     if (!gameRunning && !gameOver) {
-      // start
+      // Start game
       gameRunning = true;
       obstacles = [];
       backgroundX = 0;
       drawScene();
     } else if (gameOver) {
-      // restart
+      // Restart
       gameOver = false;
       gameRunning = true;
       backgroundX = 0;
       obstacles = [];
     } else {
-      // move car if running
+      // Move car if running
       if (e.key === "ArrowUp" && car.lane > 0) {
         car.lane--;
       } else if (e.key === "ArrowDown" && car.lane < NUM_LANES - 1) {
