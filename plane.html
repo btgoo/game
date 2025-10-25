@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<script src="planescript.js"></script>
-<link rel="stylesheet" href="plane_style.css">
-<html>
-<head>
-<h1>Pilot</h1>
-</head>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Pilot</title>
+		<link rel="stylesheet" href="plane_style.css" />
+	</head>
 
-<body>
-Welcome to the game
-<p id="demo"></p>
-<canvas id="board"></canvas>
-</body>
+	<body>
+		<h1>Pilot</h1>
+		<p>Welcome to the game</p>
+		<p id="demo"></p>
+		<canvas id="board"></canvas>
 
+		<!-- Load the game script at the end so DOM elements exist; the script also waits for window.onload -->
+		<script src="planescript.js"></script>
+	</body>
 </html>
