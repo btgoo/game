@@ -42,7 +42,7 @@ function setScreen(){
 
 setScreen();
 
-window.addEventListener('resize', setScreen);
+window.addEventListener('resize', setScreen)
 
 function getScaleRatio(){
     const screenHeight = Math.min(
