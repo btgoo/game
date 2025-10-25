@@ -35,7 +35,6 @@ const GAME_HEIGHT = 600;
 const PLAYER_WIDTH = 204;
 const PLAYER_HEIGHT = 100;  
 
-
 let scaleRatio = null;
 let previousTime = null;
 

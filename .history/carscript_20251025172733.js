@@ -32,9 +32,7 @@ const ctx = canvas.getContext("2d");
 
 const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
-const PLAYER_WIDTH = 204;
-const PLAYER_HEIGHT = 100;  
-
+const 
 
 let scaleRatio = null;
 let previousTime = null;
