@@ -50,7 +50,7 @@ let car = {
 
 let obstacles = [];
 let obstacleTimer = 0;
-let obstacleInterval = 80;
+let obstacleInterval = 100;
 let lanes = [];
 
 function setupLanes() {
@@ -164,7 +164,7 @@ function gameLoop() {
         if (obstacleTimer > obstacleInterval) {
             spawnObstacle();
             obstacleTimer = 0;
-            obstacleInterval = 100 + Math.random() * 20;
+            obstacleInterval = 100 + Math.random() * 40;
         }
     
         obstacles.forEach((ob) => (ob.x -= gameSpeed));

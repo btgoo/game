@@ -15,12 +15,7 @@ const obstacleData = [
     {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
-    {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/tumbleweed.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
-    {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
     {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
 ];
 
@@ -36,7 +31,7 @@ obstacleData.forEach(data => {
 let scaleRatio = null;
 let backgroundX = 0; 
 let gameSpeed = 3;
-let speedIncreaseRate = 0.0001;
+// let speedIncreaseRate = 0.0001;
 
 let gameRunning = false;
 let gameOver = false;
@@ -50,7 +45,7 @@ let car = {
 
 let obstacles = [];
 let obstacleTimer = 0;
-let obstacleInterval = 80;
+let obstacleInterval = 120;
 let lanes = [];
 
 function setupLanes() {
@@ -158,22 +153,23 @@ function drawScene() {
 function gameLoop() {
     if (gameRunning && !gameOver) {
       // Move background
-        backgroundX += gameSpeed;
+        backgroundX += backgroundSpeed;
   
         obstacleTimer++;
         if (obstacleTimer > obstacleInterval) {
             spawnObstacle();
             obstacleTimer = 0;
-            obstacleInterval = 100 + Math.random() * 20;
+            obstacleInterval = 100 + Math.random() * 100;
         }
     
-        obstacles.forEach((ob) => (ob.x -= gameSpeed));
+        obstacles.forEach((ob) => (ob.x -= obstacleSpeed));
     
         obstacles = obstacles.filter((ob) => ob.x + ob.width > 0);
         
         checkCollisions();
 
-        gameSpeed += speedIncreaseRate;
+        // backgroundSpeed += speedIncreaseRate;
+        // obstacleSpeed += speedIncreaseRate;
 
         drawScene();
     }
@@ -225,6 +221,8 @@ window.addEventListener("keydown", (e) => {
       gameRunning = true;
       obstacles = [];
       backgroundX = 0;
+      backgroundSpeed = 2;
+      obstacleSpeed = 3;
       drawScene();
     } else if (gameOver) {
       // Restart
@@ -232,6 +230,8 @@ window.addEventListener("keydown", (e) => {
       gameRunning = true;
       backgroundX = 0;
       obstacles = [];
+      backgroundSpeed = 2;
+      obstacleSpeed = 3;
     } else {
       // Move car if running
       if (e.key === "ArrowUp" && car.lane > 0) {

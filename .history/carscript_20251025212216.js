@@ -5,38 +5,29 @@ const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
 const PLAYER_WIDTH = 183;
 const PLAYER_HEIGHT = 90;
-const CACTI_WIDTH = 78;
-const CACTI_Height = 90;
-
 const NUM_LANES = 5;
 
-const obstacleData = [
-    {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
-    {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
-    {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/tumbleweed.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
-    {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
-    {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
+const obstacleImages = [
+    "./assets/images/car_images/cactus_1.png",
+    "./assets/images/car_images/cactus_2.png",
+    "./assets/images/car_images/cactus_3.png",
+    "./assets/images/car_images/cactus_4.png",
+    "./assets/images/car_images//tumbleweed.png",
+    "./assets/images/car_images/red_car.png" 
 ];
 
 let obstacleImgs = [];
-obstacleData.forEach(data => {
-    const img = new Image();
-    img.src = data.src;
-    img.width = data.width;
-    img.height = data.height;
-    obstacleImgs.push(img);
+obstacleImages.forEach((src) => {
+  const img = new Image();
+  img.src = src;
+  obstacleImgs.push(img);
 });
 
 let scaleRatio = null;
 let backgroundX = 0; 
-let gameSpeed = 3;
-let speedIncreaseRate = 0.0001;
+let backgroundSpeed = 2;
+let obstacleSpeed = 3;
+let speedIncreaseRate = 0.0005;
 
 let gameRunning = false;
 let gameOver = false;
@@ -50,7 +41,7 @@ let car = {
 
 let obstacles = [];
 let obstacleTimer = 0;
-let obstacleInterval = 80;
+let obstacleInterval = 120;
 let lanes = [];
 
 function setupLanes() {
@@ -92,6 +83,9 @@ backgroundImg.src = "./assets/car_images/background.png";
 const carImg = new Image();
 carImg.src = "./assets/car_images/blue_car.png";
 
+const obstacleImg = new Image();
+obstacleImg.src = "./assets/car_images/red_car.png";
+
 backgroundImg.onload = requestAnimationFrame(gameLoop);
 carImg.onload = () => requestAnimationFrame(gameLoop);
 
@@ -128,7 +122,7 @@ function drawScene() {
 
     obstacles.forEach((ob) => {
         ctx.drawImage(
-        ob.img,
+        obstacleImg,
         ob.x * scaleRatio,
         ob.y * scaleRatio,
         ob.width * scaleRatio,
@@ -158,22 +152,23 @@ function drawScene() {
 function gameLoop() {
     if (gameRunning && !gameOver) {
       // Move background
-        backgroundX += gameSpeed;
+        backgroundX += backgroundSpeed / scaleRatio;
   
         obstacleTimer++;
         if (obstacleTimer > obstacleInterval) {
             spawnObstacle();
             obstacleTimer = 0;
-            obstacleInterval = 100 + Math.random() * 20;
+            obstacleInterval = 100 + Math.random() * 100;
         }
     
-        obstacles.forEach((ob) => (ob.x -= gameSpeed));
+        obstacles.forEach((ob) => (ob.x -= obstacleSpeed));
     
         obstacles = obstacles.filter((ob) => ob.x + ob.width > 0);
         
         checkCollisions();
 
-        gameSpeed += speedIncreaseRate;
+        backgroundSpeed += speedIncreaseRate;
+        obstacleSpeed += speedIncreaseRate;
 
         drawScene();
     }
@@ -205,16 +200,12 @@ function checkCollisions() {
 
 function spawnObstacle() {
     const lane = Math.floor(Math.random() * NUM_LANES);
-    const imgIndex = Math.floor(Math.random() * obstacleImgs.length);
-    const chosenImg = obstacleImgs[imgIndex];
-
     const newObstacle = {
-        x: GAME_WIDTH + 50,
+        x: GAME_WIDTH + 50, // start slightly off-screen
         y: lanes[lane],
-        width: chosenImg.width,
-        height: chosenImg.height,
+        width: PLAYER_WIDTH,
+        height: PLAYER_HEIGHT,
         lane: lane,
-        img: chosenImg
     };
     obstacles.push(newObstacle);
 }
@@ -225,6 +216,8 @@ window.addEventListener("keydown", (e) => {
       gameRunning = true;
       obstacles = [];
       backgroundX = 0;
+      backgroundSpeed = 2;
+      obstacleSpeed = 3;
       drawScene();
     } else if (gameOver) {
       // Restart
@@ -232,6 +225,8 @@ window.addEventListener("keydown", (e) => {
       gameRunning = true;
       backgroundX = 0;
       obstacles = [];
+      backgroundSpeed = 2;
+      obstacleSpeed = 3;
     } else {
       // Move car if running
       if (e.key === "ArrowUp" && car.lane > 0) {

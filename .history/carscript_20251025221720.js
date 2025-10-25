@@ -15,12 +15,7 @@ const obstacleData = [
     {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
-    {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
-    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/tumbleweed.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
-    {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
     {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
 ];
 
@@ -50,7 +45,7 @@ let car = {
 
 let obstacles = [];
 let obstacleTimer = 0;
-let obstacleInterval = 80;
+let obstacleInterval = 100;
 let lanes = [];
 
 function setupLanes() {
@@ -164,7 +159,7 @@ function gameLoop() {
         if (obstacleTimer > obstacleInterval) {
             spawnObstacle();
             obstacleTimer = 0;
-            obstacleInterval = 100 + Math.random() * 20;
+            obstacleInterval = 100 + Math.random() * 70;
         }
     
         obstacles.forEach((ob) => (ob.x -= gameSpeed));
@@ -225,6 +220,8 @@ window.addEventListener("keydown", (e) => {
       gameRunning = true;
       obstacles = [];
       backgroundX = 0;
+      backgroundSpeed = 2;
+      obstacleSpeed = 3;
       drawScene();
     } else if (gameOver) {
       // Restart
@@ -232,6 +229,8 @@ window.addEventListener("keydown", (e) => {
       gameRunning = true;
       backgroundX = 0;
       obstacles = [];
+      backgroundSpeed = 2;
+      obstacleSpeed = 3;
     } else {
       // Move car if running
       if (e.key === "ArrowUp" && car.lane > 0) {
