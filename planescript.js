@@ -21,10 +21,9 @@ window.onload = function() {
   board.height = boardHeight;
   context = board.getContext("2d");
 
-  planeImg = new Image();
-  planeImg.src = "/assets/plane_images/Plane.png"
-  planeImg.onload = function(){
-    context.drawImage(planeImg, plane.x, plane.y, plane.width, plane.height)
-  }
+    planeImg = new Image();
+    planeImg.src = "/assets/plane_images/Plane_Object.png"
+    planeImg.onload = function() {
+        context.drawImage(planeImg, plane.x, plane.y, plane.width, plane.height)
+    }
 }
-
