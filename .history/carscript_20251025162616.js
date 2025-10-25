@@ -70,8 +70,8 @@ function getScaleRatio(){
 }
 
 function clearScreen(){
-    ctx.fillStyle = "#ffc470";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "green";
+    ctx.fillReact(0, 0, canvas.width, canvas.height);
 }
 
 function gameLoop(){

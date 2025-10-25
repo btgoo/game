@@ -34,20 +34,20 @@ const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
 
 let scaleRatio = null;
-
 function setScreen(){
     scaleRatio = getScaleRatio();
-    canvas.width = GAME_WIDTH * scaleRatio;
-    canvas.height = GAME_HEIGHT * scaleRatio;
+    canvas.width = GAME_WIDTH * scaleRatio
+    canvas.height = GAME_HEIGHT
 }
 
 setScreen();
 
-window.addEventListener("resize", () => setTimeout(setScreen, 10));
+window.addEventListener('resize', () => setScreen, 500);
 
-if(screen.orientation){
-    screen.orientation.addEventListener("change", setScreen);
-}
+// if(screen.orientation){
+//     screen.orientation.addEventList
+//     ener("change", setScreen);
+// }
 
 function getScaleRatio(){
     const screenHeight = Math.min(
@@ -62,18 +62,16 @@ function getScaleRatio(){
 
     // window is wider than the game width
     if(screenWidth/screenHeight < GAME_WIDTH/GAME_HEIGHT){
-        return screenWidth/GAME_WIDTH;
+        return screenWidth/GAME_WIDTH
     }
     else{
-        return screenHeight/GAME_HEIGHT;
+        return screenHeight/GAME_HEIGHT
     }
 }
 
 function clearScreen(){
-    ctx.fillStyle = "#ffc470";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
 
+}
 function gameLoop(){
     clearScreen();
     requestAnimationFrame(gameLoop);

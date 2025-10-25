@@ -70,7 +70,7 @@ function getScaleRatio(){
 }
 
 function clearScreen(){
-    ctx.fillStyle = "#ffc470";
+    ctx.fillStyle = "green";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 

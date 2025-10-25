@@ -34,7 +34,6 @@ const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
 
 let scaleRatio = null;
-
 function setScreen(){
     scaleRatio = getScaleRatio();
     canvas.width = GAME_WIDTH * scaleRatio;
@@ -43,7 +42,7 @@ function setScreen(){
 
 setScreen();
 
-window.addEventListener("resize", () => setTimeout(setScreen, 10));
+window.addEventListener('resize', () => setScreen, 500);
 
 if(screen.orientation){
     screen.orientation.addEventListener("change", setScreen);
@@ -70,8 +69,8 @@ function getScaleRatio(){
 }
 
 function clearScreen(){
-    ctx.fillStyle = "#ffc470";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "red";
+    ctx.fillReact(0, 0, canvas.width, canvas.height);
 }
 
 function gameLoop(){
