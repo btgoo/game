@@ -3,7 +3,6 @@ let boardWidth = 1200;
 let boardHeight = 600;
 let context;
 let hitPoint = 100;
-let gravity = true;
 
 let planeWidth = 150;
 let planeHeight = 95;
@@ -18,7 +17,9 @@ let plane = {
 };
 
 let enemies = [];
+let bigEnemies = []
 let HP = [];
+
 let planeImg = new Image();
 planeImg.src = "/assets/plane_images/Plane.png";
 let enemyImg = new Image();
@@ -27,8 +28,7 @@ let hpImg = new Image();
 hpImg.src = "/assets/plane_images/HP_heart.png";
 
 let spawnInterval = 1500;
-let assetsLoaded = 0;
-let statusEl = null;
+let status_HP = null;
 
 window.onload = function () {
     board = document.getElementById("board");
@@ -36,7 +36,7 @@ window.onload = function () {
     board.height = boardHeight;
     context = board.getContext("2d");
 
-    statusEl = document.getElementById('demo') || null;
+    status_HP = document.getElementById('demo') || null;
 
     const moveSpeed = 30;
     document.addEventListener('keydown', function (event) {
@@ -57,11 +57,12 @@ window.onload = function () {
 
     requestAnimationFrame(gameLoop);
     setInterval(spawnEnemy, spawnInterval);
-    setInterval(spawnHP, 40000);
+    setInterval(spawnBigEnemy, spawnInterval * 3);
+    setInterval(spawnHP, 30000);
 }
 
 function spawnEnemy() {
-    const width = 100;
+const width = 100;
     const height = 70;
     const x = boardWidth;
     const y = Math.random() * (boardHeight - height);
@@ -69,13 +70,22 @@ function spawnEnemy() {
     enemies.push({ x, y, width, height, speed });
 }
 
+function spawnBigEnemy() {
+const width = 150;
+    const height = 95;
+    const x = boardWidth;
+    const y = Math.random() * (boardHeight - height);
+    const speed = 1 + Math.random() * 2;
+    enemies.push({ x, y, width, height, speed });
+}
+
 function spawnHP() {
-    const width = 100;
+const width = 100;
     const height = 70;
     const x = boardWidth;
     const y = Math.random() * (boardHeight - height);
     const speed = 1 + Math.random() * 3;
-    HP.push({x, y, width, height, speed});
+    HP.push({ x, y, width, height, speed });
 }
 
 function update() {
@@ -83,6 +93,11 @@ function update() {
         e.x -= e.speed;
     }
     enemies = enemies.filter((e) => e.x + e.width > 0);
+
+    for (let b of bigEnemies) {
+        b.x -= b.speed;
+    }
+    bigEnemies = bigEnemies.filter((b) => b.x + b.width > 0);
     
     for (let h of HP) {
         h.x -= h.speed;
@@ -100,42 +115,65 @@ function draw() {
     for (let e of enemies) {
         context.drawImage(enemyImg, e.x, e.y, e.width, e.height);
     }
+
+    for (let b of bigEnemies) {
+        context.drawImage(enemyImg, b.x, b.y, b.width, b.height);
+    }
     
     for (let h of HP) {
         context.drawImage(hpImg, h.x, h.y, h.width, h.height);
     }
 
-    if (statusEl) statusEl.innerText = `HP: ${hitPoint}`;
+    if (status_HP) status_HP.innerText = `HP: ${hitPoint}`;
     }
 
 
 function lose_hp() {
     for (let e of enemies) {
-        // Check for rectangle collision (axis-aligned bounding box)
+
         const collision =
-            plane.x < e.x + e.width &&         // plane’s left is left of enemy’s right
-            plane.x + plane.width > e.x &&     // plane’s right is right of enemy’s left
-            plane.y < e.y + e.height &&        // plane’s top is above enemy’s bottom
-            plane.y + plane.height > e.y;      // plane’s bottom is below enemy’s top
+            plane.x < e.x + e.width &&         
+            plane.x + plane.width > e.x &&     
+            plane.y < e.y + e.height &&        
+            plane.y + plane.height > e.y;     
 
         if (collision) {
-            hitPoint -= 20;
+            hitPoint -= 10;
 
-            // Optional: remove enemy after collision
             enemies = enemies.filter(enemy => enemy !== e);
 
-            // Optional: stop HP going below zero
             if (hitPoint < 0) hitPoint = 0;
 
-            // Optional: end game when HP = 0
             if (hitPoint === 0) {
                 alert("Game Over!");
                 window.location.reload();
             }
         }
     }
-}
+    
+    for (let b of bigEnemies) {
+        
+        const collision =
+            plane.x < b.x + b.width &&         
+            plane.x + plane.width > b.x &&     
+            plane.y < b.y + b.height &&        
+            plane.y + plane.height > b.y; 
 
+        if (collision) {
+            hitPoint -= 30;
+
+            bigEnemies = bigEnemies.filter(enemy => enemy !== b);
+
+            if (hitPoint < 0) hitPoint = 0;
+
+            if (hitPoint === 0) {
+                alert("Game Over!");
+                window.location.reload();
+            }
+        }
+    }
+    
+}
 function healHP() {
     for (let h of HP) {
         const collected =
@@ -144,7 +182,7 @@ function healHP() {
             plane.y < h.y + h.height &&
             plane.y + plane.height > h.y;
         if (collected) {
-            hitPoint += 20; // heal the plane
+            hitPoint += 50; 
             HP = HP.filter(x => x !== h);
         }
     }
