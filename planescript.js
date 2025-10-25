@@ -27,7 +27,7 @@ enemyImg.src = "/assets/plane_images/Enemy.png";
 let hpImg = new Image();
 hpImg.src = "/assets/plane_images/HP_heart.png";
 
-let spawnInterval = 1500;
+let spawnInterval = 1800;
 let status_HP = null;
 
 window.onload = function () {
@@ -56,8 +56,14 @@ window.onload = function () {
     );
 
     requestAnimationFrame(gameLoop);
+
     setInterval(spawnEnemy, spawnInterval);
-    setInterval(spawnHP, 40000);
+    setInterval(spawnBigEnemy, spawnInterval*4);
+    setInterval(spawnHP, 30000);
+
+    enemyTimerId = setInterval(spawnEnemy, spawnInterval);
+    benemyTimerId = setInterval(spawnBigEnemy, spawnInterval);
+    hpTimerId = setInterval(spawnHP, 30000);
 }
 
 function spawnEnemy() {
@@ -75,7 +81,7 @@ const width = 150;
     const x = boardWidth;
     const y = Math.random() * (boardHeight - height);
     const speed = 1 + Math.random() * 2;
-    enemies.push({ x, y, width, height, speed });
+    bigEnemies.push({ x, y, width, height, speed });
 }
 
 function spawnHP() {
@@ -92,6 +98,11 @@ function update() {
         e.x -= e.speed;
     }
     enemies = enemies.filter((e) => e.x + e.width > 0);
+
+    for (let b of bigEnemies) {
+        b.x -= b.speed;
+    }
+    bigEnemies = bigEnemies.filter((b) => b.x + b.width > 0);
     
     for (let h of HP) {
         h.x -= h.speed;
@@ -109,12 +120,16 @@ function draw() {
     for (let e of enemies) {
         context.drawImage(enemyImg, e.x, e.y, e.width, e.height);
     }
+
+    for (let b of bigEnemies) {
+        context.drawImage(enemyImg, b.x, b.y, b.width, b.height);
+    }
     
     for (let h of HP) {
         context.drawImage(hpImg, h.x, h.y, h.width, h.height);
     }
 
-    if (statusEl) statusEl.innerText = `HP: ${hitPoint}`;
+    if (status_HP) status_HP.innerText = `HP: ${hitPoint}`;
     }
 
 function circleFor(obj, shrink = 0.3) {
@@ -135,29 +150,31 @@ function circlesOverlap(a, b) {
 
 
 function lose_hp() {
+    const pc = circleFor(plane, 0.35);
+
     for (let e of enemies) {
-        // Check for rectangle collision (axis-aligned bounding box)
-        const collision =
-            plane.x < e.x + e.width &&         // plane’s left is left of enemy’s right
-            plane.x + plane.width > e.x &&     // plane’s right is right of enemy’s left
-            plane.y < e.y + e.height &&        // plane’s top is above enemy’s bottom
-            plane.y + plane.height > e.y;      // plane’s bottom is below enemy’s top
-
-        if (collision) {
-            hitPoint -= 20;
-
-            // Optional: remove enemy after collision
+        const ec = circleFor(e, 0.25);
+        if (circlesOverlap(pc,ec)){
+            hitPoint -= 10;
             enemies = enemies.filter(enemy => enemy !== e);
-
-            // Optional: stop HP going below zero
             if (hitPoint < 0) hitPoint = 0;
-
-            // Optional: end game when HP = 0
             if (hitPoint === 0) {
                 alert("Game Over!");
                 window.location.reload();
             }
         }
+    }
+    for (let b of bigEnemies) {
+        const bc = circleFor(b, 0.35);
+        if (circlesOverlap(pc,bc)){
+            hitPoint -= 30;    
+            bigEnemies = bigEnemies.filter(benemy => benemy !== b);
+            if (hitPoint < 0) hitPoint = 0;
+            if (hitPoint === 0) {
+                    alert("Game Over!");
+                    window.location.reload();
+                }       
+            }       
     }
 }
 
@@ -169,7 +186,7 @@ function healHP() {
             plane.y < h.y + h.height &&
             plane.y + plane.height > h.y;
         if (collected) {
-            hitPoint += 20; // heal the plane
+            hitPoint += 50; // heal the plane
             HP = HP.filter(x => x !== h);
         }
     }
@@ -179,10 +196,11 @@ document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         clearInterval(enemyTimerId);
         clearInterval(hpTimerId);
+        clearInterval(BenemyTimerId);
     } else {
-        // small grace delay prevents an instant burst on return
         setTimeout(() => {
             enemyTimerId = setInterval(spawnEnemy, spawnInterval);
+            BenemyTimerId = setInterval(spawnBigEnemy, spawnInterval * 3);
             hpTimerId = setInterval(spawnHP, 40000);
         }, 300);
     }
