@@ -30,17 +30,14 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 250;
+const GAME_WIDTH = 1200;
+const GAME_HEIGHT = 600;
 
 let scaleRatio = null;
 function setScreen(){
     scaleRatio = getScaleRatio();
-    canvas.width = GAME_WIDTH * scaleRatio
-    canvas.height = GAME_HEIGHT
+    canvas.
 }
-
-setScreen();
 
 function getScaleRatio(){
     const screenHeight = Math.min(

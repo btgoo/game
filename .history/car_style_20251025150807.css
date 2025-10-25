@@ -1,0 +1,29 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        body{
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        canvas {
+            border: 2px solid grey;
+        }
+    </style>
+}
+canvas {
+    border: 2px solid grey;
+}
