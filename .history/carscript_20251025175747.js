@@ -33,7 +33,7 @@ const ctx = canvas.getContext("2d");
 const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
 const PLAYER_WIDTH = 204;
-const PLAYER_HEIGHT = 100;
+const PLAYER_HEIGHT = 100;  
 
 
 let scaleRatio = null;
@@ -44,6 +44,8 @@ function setScreen(){
     canvas.width = GAME_WIDTH * scaleRatio;
     canvas.height = GAME_HEIGHT * scaleRatio;
 }
+
+let scaleRatio = null
 
 function getScaleRatio(){
     const screenHeight = Math.min(
@@ -70,14 +72,8 @@ function setScreen(){
     canvas.height = GAME_HEIGHT * scaleRatio
 }
 
-setScreen();
-
-window.addEventListener('resize', () => {
-    setScreen();
-    drawCar();
-});
-
 function clearScreen(){
+    ctx.fillStyle = "#ffc470";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -93,7 +89,12 @@ function gameLoop(currentTime) {
     requestAnimationFrame(gameLoop);
 }
 
-requestAnimationFrame(gameLoop);
+setScreen();
+
+window.addEventListener('resize', () => {
+    setScreen();
+    drawCar();
+});
 
 
 
