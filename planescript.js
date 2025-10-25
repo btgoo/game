@@ -22,9 +22,8 @@ window.onload = function() {
     context = board.getContext("2d");
 
     planeImg = new Image();
-    planeImg.src = "/assets/plane_images/Plane.png"
+    planeImg.src = "/assets/plane_images/Plane_Object.png"
     planeImg.onload = function() {
         context.drawImage(planeImg, plane.x, plane.y, plane.width, plane.height)
     }
 }
-
