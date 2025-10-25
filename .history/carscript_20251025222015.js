@@ -164,7 +164,7 @@ function gameLoop() {
         if (obstacleTimer > obstacleInterval) {
             spawnObstacle();
             obstacleTimer = 0;
-            obstacleInterval = 100 + Math.random() * 20;
+            obstacleInterval = 100 + Math.random() * 40;
         }
     
         obstacles.forEach((ob) => (ob.x -= gameSpeed));
