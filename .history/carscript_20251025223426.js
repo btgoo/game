@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
-const PLAYER_WIDTH = 160;
+const PLAYER_WIDTH = 183;
 const PLAYER_HEIGHT = 90;
 const CACTI_WIDTH = 78;
 const CACTI_Height = 90;
@@ -14,12 +14,14 @@ const obstacleData = [
     {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
     {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
+    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_1.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
     {src: "./assets/car_images/cactus_2.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/cactus_3.png", width:CACTI_WIDTH, height:CACTI_Height},
+    {src: "./assets/car_images/cactus_4.png", width:CACTI_WIDTH, height:CACTI_Height},
     {src: "./assets/car_images/tumbleweed.png", width:CACTI_WIDTH, height:CACTI_WIDTH},
     {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
-    {src: "./assets/car_images/green_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
+    {src: "./assets/car_images/red_car.png", width:PLAYER_WIDTH, height:PLAYER_HEIGHT},
 ];
 
 let obstacleImgs = [];
@@ -32,7 +34,7 @@ obstacleData.forEach(data => {
 });
 
 const explosionImg = new Image();
-explosionImg.src = "./assets/car_images/explosion_sprite.png";
+explosionImg.src = "./assets/images/explosion.png";
 
 let explosions = [];
 
@@ -116,14 +118,18 @@ function drawStartScreen() {
 function drawScene() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const bgWidth = canvas.width;
-    const bgHeight = canvas.height;
-    let bgX = -backgroundX * scaleRatio;
+    if (backgroundImg.complete) {
+        const bgWidth = canvas.width;
+        const bgHeight = canvas.height;
+        let bgX = -backgroundX * scaleRatio;
 
-    ctx.drawImage(backgroundImg, bgX, 0, bgWidth, bgHeight);
-    ctx.drawImage(backgroundImg, bgX + bgWidth, 0, bgWidth, bgHeight);
+        ctx.drawImage(backgroundImg, bgX, 0, bgWidth, bgHeight);
+        ctx.drawImage(backgroundImg, bgX + bgWidth, 0, bgWidth, bgHeight);
 
-    if (backgroundX * scaleRatio >= bgWidth) backgroundX = 0;
+        if (backgroundX * scaleRatio >= bgWidth) {
+        backgroundX = 0;
+        }
+    }
 
     obstacles.forEach((ob) => {
         ctx.drawImage(
@@ -135,39 +141,13 @@ function drawScene() {
         );
     });
 
-    if (!gameOver) {
-        ctx.drawImage(
-            carImg,
-            car.x * scaleRatio,
-            car.y * scaleRatio,
-            car.width * scaleRatio,
-            car.height * scaleRatio
-        );
-    }
-    explosions.forEach((ex, i) => {
-        const frameWidth = explosionImg.width / ex.maxFrames;
-        const frameHeight = explosionImg.height;
-
-        ctx.drawImage(
-            explosionImg,
-            frameWidth * ex.frame,
-            0,
-            frameWidth,
-            frameHeight,
-            ex.x * scaleRatio,
-            ex.y * scaleRatio,
-            ex.width * scaleRatio,
-            ex.height * scaleRatio
-        );
-
-        ex.tick++;
-        if (ex.tick % ex.frameSpeed === 0) {
-            ex.frame++;
-        }
-        if (ex.frame >= ex.maxFrames) {
-            explosions.splice(i, 1);
-        }
-    });
+    ctx.drawImage(
+        carImg,
+        car.x * scaleRatio,
+        car.y * scaleRatio,
+        car.width * scaleRatio,
+        car.height * scaleRatio
+    );
     if (gameOver) {
         ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -214,7 +194,7 @@ function checkCollisions() {
       const carBottom = car.y + car.height;
   
       const obLeft = ob.x;
-      const obRight = ob.x + ob.width-10;
+      const obRight = ob.x + ob.width;
       const obTop = ob.y;
       const obBottom = ob.y + ob.height;
   
@@ -222,16 +202,10 @@ function checkCollisions() {
       const verticalOverlap = carTop < obBottom && carBottom > obTop;
   
       if (horizontalOverlap && verticalOverlap) {
-        spawnExplosion(car.x, car.y, car.width, car.height);
-        setTimeout(setGameOver, 80);
+        gameOver = true;
+        gameRunning = false;
       }
     });
-}
-
-function setGameOver(){
-    gameRunning = false;
-    gameOver = true
-    drawScene();
 }
 
 function spawnObstacle() {
@@ -265,19 +239,19 @@ function spawnExplosion(x, y, width, height) {
 
 window.addEventListener("keydown", (e) => {
     if (!gameRunning && !gameOver) {
-      // start
+      // Start game
       gameRunning = true;
       obstacles = [];
       backgroundX = 0;
       drawScene();
     } else if (gameOver) {
-      // restart
+      // Restart
       gameOver = false;
       gameRunning = true;
       backgroundX = 0;
       obstacles = [];
     } else {
-      // move car if running
+      // Move car if running
       if (e.key === "ArrowUp" && car.lane > 0) {
         car.lane--;
       } else if (e.key === "ArrowDown" && car.lane < NUM_LANES - 1) {

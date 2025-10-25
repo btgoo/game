@@ -135,15 +135,13 @@ function drawScene() {
         );
     });
 
-    if (!gameOver) {
-        ctx.drawImage(
-            carImg,
-            car.x * scaleRatio,
-            car.y * scaleRatio,
-            car.width * scaleRatio,
-            car.height * scaleRatio
+    ctx.drawImage(
+        carImg,
+        car.x * scaleRatio,
+        car.y * scaleRatio,
+        car.width * scaleRatio,
+        car.height * scaleRatio
         );
-    }
     explosions.forEach((ex, i) => {
         const frameWidth = explosionImg.width / ex.maxFrames;
         const frameHeight = explosionImg.height;
@@ -223,13 +221,13 @@ function checkCollisions() {
   
       if (horizontalOverlap && verticalOverlap) {
         spawnExplosion(car.x, car.y, car.width, car.height);
+        
         setTimeout(setGameOver, 80);
       }
     });
 }
 
 function setGameOver(){
-    gameRunning = false;
     gameOver = true
     drawScene();
 }

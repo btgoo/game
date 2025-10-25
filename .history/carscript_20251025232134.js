@@ -135,8 +135,8 @@ function drawScene() {
         );
     });
 
-    if (!gameOver) {
-        ctx.drawImage(
+    
+     ctx.drawImage(
             carImg,
             car.x * scaleRatio,
             car.y * scaleRatio,

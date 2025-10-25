@@ -135,13 +135,12 @@ function drawScene() {
         );
     });
 
-    if (!gameOver) {
-        ctx.drawImage(
-            carImg,
-            car.x * scaleRatio,
-            car.y * scaleRatio,
-            car.width * scaleRatio,
-            car.height * scaleRatio
+    ctx.drawImage(
+        carImg,
+        car.x * scaleRatio,
+        car.y * scaleRatio,
+        car.width * scaleRatio,
+        car.height * scaleRatio
         );
     }
     explosions.forEach((ex, i) => {
