@@ -34,7 +34,6 @@ const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
 
 let scaleRatio = null;
-let previousTime = null;
 
 function setScreen(){
     scaleRatio = getScaleRatio();
@@ -75,7 +74,7 @@ function clearScreen(){
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function gameLoop(currentTime) {
+function gameLoop(currentTime){
     if(previousTime === null) {
         previousTime = currentTime;
         requestAnimationFrame(gameLoop);
@@ -83,6 +82,7 @@ function gameLoop(currentTime) {
     }
     const frameTimeDelta = currentTime - previousTime;
     previousTime = currentTime;
+    console.log(frameTimeDelta);
     clearScreen();
     requestAnimationFrame(gameLoop);
 }

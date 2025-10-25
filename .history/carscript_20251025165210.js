@@ -34,7 +34,7 @@ const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
 
 let scaleRatio = null;
-let previousTime = null;
+let prev
 
 function setScreen(){
     scaleRatio = getScaleRatio();
@@ -83,6 +83,7 @@ function gameLoop(currentTime) {
     }
     const frameTimeDelta = currentTime - previousTime;
     previousTime = currentTime;
+    console.log(frameTimeDelta);
     clearScreen();
     requestAnimationFrame(gameLoop);
 }

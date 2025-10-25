@@ -83,6 +83,7 @@ function gameLoop(currentTime) {
     }
     const frameTimeDelta = currentTime - previousTime;
     previousTime = currentTime;
+    console.log(frameTimeDelta);
     clearScreen();
     requestAnimationFrame(gameLoop);
 }
