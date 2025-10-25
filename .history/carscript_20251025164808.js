@@ -30,33 +30,24 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-<<<<<<< HEAD
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 250;
-
-let car = {
-x : GAME_WIDTH/24,
-y : GAME_HEIGHT/2.5,
-width: 150,
-height: 95,
-=======
 const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
-const PLAYER_WIDTH = 204;
-const PLAYER_HEIGHT = 100;  
-
 
 let scaleRatio = null;
-let previousTime = null;
 
 function setScreen(){
     scaleRatio = getScaleRatio();
     canvas.width = GAME_WIDTH * scaleRatio;
     canvas.height = GAME_HEIGHT * scaleRatio;
->>>>>>> 8eb5c316a0ca6565f80c300e7dbf1269f98ec802
 }
 
-let scaleRatio = null
+setScreen();
+
+window.addEventListener("resize", () => setTimeout(setScreen, 10));
+
+if(screen.orientation){
+    screen.orientation.addEventListener("change", setScreen);
+}
 
 function getScaleRatio(){
     const screenHeight = Math.min(
@@ -71,65 +62,27 @@ function getScaleRatio(){
 
     // window is wider than the game width
     if(screenWidth/screenHeight < GAME_WIDTH/GAME_HEIGHT){
-        return screenWidth/GAME_WIDTH
+        return screenWidth/GAME_WIDTH;
     }
     else{
-        return screenHeight/GAME_HEIGHT
+        return screenHeight/GAME_HEIGHT;
     }
 }
-function setScreen(){
-    scaleRatio = getScaleRatio();
-    canvas.width = GAME_WIDTH * scaleRatio
-    canvas.height = GAME_HEIGHT * scaleRatio
+
+function clearScreen(){
+    ctx.fillStyle = "#ffc470";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-<<<<<<< HEAD
-=======
-function gameLoop(currentTime) {
-    if(previousTime === null) {
+function gameLoop(currentTime){
+    if(previousTime === null){
         previousTime = currentTime;
         requestAnimationFrame(gameLoop);
         return;
     }
-    const frameTimeDelta = currentTime - previousTime;
-    previousTime = currentTime;
+    const frameTimeDelta = currentTIme - previousTime;
     clearScreen();
     requestAnimationFrame(gameLoop);
 }
->>>>>>> 8eb5c316a0ca6565f80c300e7dbf1269f98ec802
 
-setScreen();
-
-window.addEventListener('resize', () => {
-    setScreen();
-    drawCar();
-});
-
-
-
-const backgroundImg = new Image();
-backgroundImg.src = "./assets/car_images/background.png"
-
-const carImg = new Image();
-carImg.src = "./assets/car_images/blue_car.png"
-
-backgroundImg.onload = drawScene;
-carImg.onload = drawScene;
-
-function drawScene() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (backgroundImg.complete) {
-    ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
-  }
-
-  if (carImg.complete) {
-    ctx.drawImage(
-      carImg,
-      car.x * scaleRatio,
-      car.y * scaleRatio,
-      car.width * scaleRatio,
-      car.height * scaleRatio
-    );
-  }
-}
+requestAnimationFrame(gameLoop);

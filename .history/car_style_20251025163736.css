@@ -1,11 +1,9 @@
 * {
     padding: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
     margin: 0px;
 }
 body{
-    /* display:flex; */
+    display:flex;
     align-items: center;
     justify-content: center;
     height: 100vh;

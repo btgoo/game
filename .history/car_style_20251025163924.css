@@ -1,7 +1,5 @@
 * {
     padding: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
     margin: 0px;
 }
 body{
@@ -19,8 +17,8 @@ body{
     -ms-user-select: none;
     user-select: none;
     outline: none;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); */
 }
-/* canvas {
+canvas {
     
-} */
+}
