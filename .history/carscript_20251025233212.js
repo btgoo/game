@@ -296,8 +296,8 @@ window.addEventListener("keydown", (e) => {
         drawScene();
     } else if (gameOver) {
       // restart
-        gameOver = false;
-        gameRunning = true;
+      gameOver = false;
+    gameRunning = true;
         backgroundX = 0;
         obstacles = [];
         explosions = [];

@@ -126,14 +126,6 @@ function drawScene() {
     ctx.drawImage(backgroundImg, bgX, 0, bgWidth, bgHeight);
     ctx.drawImage(backgroundImg, bgX + bgWidth, 0, bgWidth, bgHeight);
 
-    ctx.fillStyle = "white";
-    ctx.font = `${30 * scaleRatio}px Arial`;
-    ctx.textAlign = "left";
-    ctx.fillText(`Score: ${score}`, 20 * scaleRatio, 40 * scaleRatio);
-
-    ctx.textAlign = "right";
-    ctx.fillText(`Max: ${maxScore}`, canvas.width - 20 * scaleRatio, 40 * scaleRatio);
-
     if (backgroundX * scaleRatio >= bgWidth) backgroundX = 0;
 
     obstacles.forEach((ob) => {
@@ -205,10 +197,12 @@ function gameLoop() {
         obstacles.forEach((ob) => {
             ob.x -= gameSpeed;
         
+            // If obstacle has passed the player and hasn't been counted
             if (!ob.counted && ob.x + ob.width < car.x) {
                 score++;
                 ob.counted = true;
         
+                // Update max score if needed
                 if (score > maxScore) {
                     maxScore = score;
                 }
@@ -288,21 +282,15 @@ window.addEventListener("keydown", (e) => {
     if (!gameRunning && !gameOver) {
       // start
       gameRunning = true;
-        obstacles = [];
-        explosions = [];
-        backgroundX = 0;
-        gameSpeed = 3;
-        score = 0; 
-        drawScene();
+      obstacles = [];
+      backgroundX = 0;
+      drawScene();
     } else if (gameOver) {
       // restart
-        gameOver = false;
-        gameRunning = true;
-        backgroundX = 0;
-        obstacles = [];
-        explosions = [];
-        gameSpeed = 3;
-        score = 0; 
+      gameOver = false;
+      gameRunning = true;
+      backgroundX = 0;
+      obstacles = [];
     } else {
       // move car if running
       if (e.key === "ArrowUp" && car.lane > 0) {

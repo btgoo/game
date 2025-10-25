@@ -296,7 +296,7 @@ window.addEventListener("keydown", (e) => {
         drawScene();
     } else if (gameOver) {
       // restart
-        gameOver = false;
+      gameOver = false;
         gameRunning = true;
         backgroundX = 0;
         obstacles = [];

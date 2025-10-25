@@ -288,21 +288,15 @@ window.addEventListener("keydown", (e) => {
     if (!gameRunning && !gameOver) {
       // start
       gameRunning = true;
-        obstacles = [];
-        explosions = [];
-        backgroundX = 0;
-        gameSpeed = 3;
-        score = 0; 
-        drawScene();
+      obstacles = [];
+      backgroundX = 0;
+      drawScene();
     } else if (gameOver) {
       // restart
-        gameOver = false;
-        gameRunning = true;
-        backgroundX = 0;
-        obstacles = [];
-        explosions = [];
-        gameSpeed = 3;
-        score = 0; 
+      gameOver = false;
+      gameRunning = true;
+      backgroundX = 0;
+      obstacles = [];
     } else {
       // move car if running
       if (e.key === "ArrowUp" && car.lane > 0) {
