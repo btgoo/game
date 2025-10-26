@@ -127,9 +127,9 @@ function drawScene() {
     ctx.drawImage(backgroundImg, bgX + bgWidth, 0, bgWidth, bgHeight);
 
     ctx.fillStyle = "white";
-    ctx.font = `bold ${20}px Verdana`;
+    ctx.font = `bold ${30 * scaleRatio}px Verdana`;
     ctx.textAlign = "left";
-    ctx.fillText(`Score: ${score}    Max: ${maxScore}`, 20 * scaleRatio, 40 * scaleRatio);
+    ctx.fillText(`Score: ${score}    Max: ${maxScore}`, 20 * scaleRatio);
 
     if (backgroundX * scaleRatio >= bgWidth) backgroundX = 0;
 
@@ -196,7 +196,7 @@ function gameLoop() {
         if (obstacleTimer > obstacleInterval) {
             spawnObstacle();
             obstacleTimer = 0;
-            obstacleInterval = 100 + Math.random() * 10;
+            obstacleInterval = 100 + Math.random() * 20;
         }
     
         obstacles.forEach((ob) => {
