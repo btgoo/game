@@ -17,15 +17,15 @@ let plane = {
 };
 
 let enemies = [];
-let bigEnemies = []
+let bigEnemies = [];
 let HP = [];
 
 let planeImg = new Image();
-planeImg.src = "/assets/plane_images/Plane.png";
+planeImg.src = "assets/plane_images/Plane.png";
 let enemyImg = new Image();
-enemyImg.src = "/assets/plane_images/Enemy.png";
+enemyImg.src = "assets/plane_images/Enemy.png";
 let hpImg = new Image();
-hpImg.src = "/assets/plane_images/HP_heart.png";
+hpImg.src = "assets/plane_images/HP_heart.png";
 
 let spawnInterval = 1800;
 let status_HP = null;
@@ -58,7 +58,7 @@ window.onload = function () {
     requestAnimationFrame(gameLoop);
 
     setInterval(spawnEnemy, spawnInterval);
-    setInterval(spawnBigEnemy, spawnInterval*4);
+    setInterval(spawnBigEnemy, spawnInterval * 4);
     setInterval(spawnHP, 30000);
 
     enemyTimerId = setInterval(spawnEnemy, spawnInterval);
@@ -67,8 +67,8 @@ window.onload = function () {
 }
 
 function spawnEnemy() {
-const width = 100;
-    const height = 70;
+    const width = 100;
+    const height = 50;
     const x = boardWidth;
     const y = Math.random() * (boardHeight - height);
     const speed = 2 + Math.random() * 3;
@@ -76,8 +76,8 @@ const width = 100;
 }
 
 function spawnBigEnemy() {
-const width = 150;
-    const height = 95;
+    const width = 170;
+    const height = 85;
     const x = boardWidth;
     const y = Math.random() * (boardHeight - height);
     const speed = 1 + Math.random() * 2;
@@ -85,7 +85,7 @@ const width = 150;
 }
 
 function spawnHP() {
-const width = 100;
+    const width = 100;
     const height = 70;
     const x = boardWidth;
     const y = Math.random() * (boardHeight - height);
@@ -103,7 +103,7 @@ function update() {
         b.x -= b.speed;
     }
     bigEnemies = bigEnemies.filter((b) => b.x + b.width > 0);
-    
+
     for (let h of HP) {
         h.x -= h.speed;
     }
@@ -124,28 +124,28 @@ function draw() {
     for (let b of bigEnemies) {
         context.drawImage(enemyImg, b.x, b.y, b.width, b.height);
     }
-    
+
     for (let h of HP) {
         context.drawImage(hpImg, h.x, h.y, h.width, h.height);
     }
 
     if (status_HP) status_HP.innerText = `HP: ${hitPoint}`;
-    }
+}
 
 function circleFor(obj, shrink = 0.3) {
-  const r = (Math.min(obj.width, obj.height) * (1 - shrink)) / 2;
-  return {
-    cx: obj.x + obj.width  / 2,
-    cy: obj.y + obj.height / 2,
-    r
-  };
+    const r = (Math.min(obj.width, obj.height) * (1 - shrink)) / 2;
+    return {
+        cx: obj.x + obj.width / 2,
+        cy: obj.y + obj.height / 2,
+        r
+    };
 }
 
 function circlesOverlap(a, b) {
-  const dx = a.cx - b.cx;
-  const dy = a.cy - b.cy;
-  const rr = (a.r + b.r) * (a.r + b.r);
-  return dx*dx + dy*dy <= rr;
+    const dx = a.cx - b.cx;
+    const dy = a.cy - b.cy;
+    const rr = (a.r + b.r) * (a.r + b.r);
+    return dx * dx + dy * dy <= rr;
 }
 
 
@@ -154,7 +154,7 @@ function lose_hp() {
 
     for (let e of enemies) {
         const ec = circleFor(e, 0.25);
-        if (circlesOverlap(pc,ec)){
+        if (circlesOverlap(pc, ec)) {
             hitPoint -= 10;
             enemies = enemies.filter(enemy => enemy !== e);
             if (hitPoint < 0) hitPoint = 0;
@@ -166,15 +166,15 @@ function lose_hp() {
     }
     for (let b of bigEnemies) {
         const bc = circleFor(b, 0.35);
-        if (circlesOverlap(pc,bc)){
-            hitPoint -= 30;    
+        if (circlesOverlap(pc, bc)) {
+            hitPoint -= 30;
             bigEnemies = bigEnemies.filter(benemy => benemy !== b);
             if (hitPoint < 0) hitPoint = 0;
             if (hitPoint === 0) {
-                    alert("Game Over!");
-                    window.location.reload();
-                }       
-            }       
+                alert("Game Over!");
+                window.location.reload();
+            }
+        }
     }
 }
 

@@ -10,6 +10,41 @@ body{
     align-content: center;
     flex-direction: column;
     height: 90vh;
+    font-family: 'Courier New', monospace;
+}
+
+#game {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.game-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+}
+
+.toggle-option {
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 2px solid #333;
+  color: #333;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+/* Plane page active state */
+body[data-game="plane"] .toggle-option[href$="plane.html"],
+body[data-game="car"] .toggle-option[href$="car.html"] {
+  background-color: #333;
+  color: #fff;
+  pointer-events: none;
+}
+
 
     /* user-select: none; 
     touch-action: none;
@@ -21,5 +56,3 @@ body{
     user-select: none;
     outline: none;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0); */
-}
-
