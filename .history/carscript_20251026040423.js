@@ -38,8 +38,8 @@ let explosions = [];
 
 let scaleRatio = null;
 let backgroundX = 0; 
-let gameSpeed = 2;
-let speedIncreaseRate = 0.00001 ;
+let gameSpeed = 3;
+let speedIncreaseRate = 0.0001;
 
 let gameRunning = false;
 let gameOver = false;
@@ -182,7 +182,7 @@ function drawScene() {
         ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "white";
-        ctx.font = `${60 * scaleRatio}px Arial Black`;
+        ctx.font = `${50 * scaleRatio}px Arial Black`;
         ctx.textAlign = "center";
         ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
         ctx.font = `${30 * scaleRatio}px Arial`;
@@ -230,23 +230,23 @@ requestAnimationFrame(gameLoop);
   
 function checkCollisions() {
     obstacles.forEach((ob, index) => {
-        const carLeft = car.x;
-        const carRight = car.x + car.width;
-        const carTop = car.y;
-        const carBottom = car.y + car.height;
-    
-        const obLeft = ob.x;
-        const obRight = ob.x + ob.width-10;
-        const obTop = ob.y;
-        const obBottom = ob.y + ob.height;
-    
-        const horizontalOverlap = carLeft < obRight && carRight > obLeft;
-        const verticalOverlap = carTop < obBottom && carBottom > obTop;
-    
-        if (horizontalOverlap && verticalOverlap) {
-            spawnExplosion(car.x, car.y, car.width, car.height);
-            setTimeout(setGameOver, 100);
-        }
+      const carLeft = car.x;
+      const carRight = car.x + car.width;
+      const carTop = car.y;
+      const carBottom = car.y + car.height;
+  
+      const obLeft = ob.x;
+      const obRight = ob.x + ob.width-10;
+      const obTop = ob.y;
+      const obBottom = ob.y + ob.height;
+  
+      const horizontalOverlap = carLeft < obRight && carRight > obLeft;
+      const verticalOverlap = carTop < obBottom && carBottom > obTop;
+  
+      if (horizontalOverlap && verticalOverlap) {
+        spawnExplosion(car.x, car.y, car.width, car.height);
+        setTimeout(setGameOver, 100);
+      }
     });
 }
 
@@ -296,12 +296,12 @@ window.addEventListener("keydown", (e) => {
         score = 0; 
         drawScene();
     } else {
-        // move car if running
-        if (e.key === "ArrowUp" && car.lane > 0) {
-            car.lane--;
-        } else if (e.key === "ArrowDown" && car.lane < NUM_LANES - 1) {
-            car.lane++;
-        }
-        car.y = lanes[car.lane];
+      // move car if running
+      if (e.key === "ArrowUp" && car.lane > 0) {
+        car.lane--;
+      } else if (e.key === "ArrowDown" && car.lane < NUM_LANES - 1) {
+        car.lane++;
+      }
+      car.y = lanes[car.lane];
     }
 });

@@ -38,8 +38,8 @@ let explosions = [];
 
 let scaleRatio = null;
 let backgroundX = 0; 
-let gameSpeed = 2;
-let speedIncreaseRate = 0.00001 ;
+let gameSpeed = 3;
+let speedIncreaseRate = 0.0001;
 
 let gameRunning = false;
 let gameOver = false;
@@ -230,23 +230,23 @@ requestAnimationFrame(gameLoop);
   
 function checkCollisions() {
     obstacles.forEach((ob, index) => {
-        const carLeft = car.x;
-        const carRight = car.x + car.width;
-        const carTop = car.y;
-        const carBottom = car.y + car.height;
-    
-        const obLeft = ob.x;
-        const obRight = ob.x + ob.width-10;
-        const obTop = ob.y;
-        const obBottom = ob.y + ob.height;
-    
-        const horizontalOverlap = carLeft < obRight && carRight > obLeft;
-        const verticalOverlap = carTop < obBottom && carBottom > obTop;
-    
-        if (horizontalOverlap && verticalOverlap) {
-            spawnExplosion(car.x, car.y, car.width, car.height);
-            setTimeout(setGameOver, 100);
-        }
+      const carLeft = car.x;
+      const carRight = car.x + car.width;
+      const carTop = car.y;
+      const carBottom = car.y + car.height;
+  
+      const obLeft = ob.x;
+      const obRight = ob.x + ob.width-10;
+      const obTop = ob.y;
+      const obBottom = ob.y + ob.height;
+  
+      const horizontalOverlap = carLeft < obRight && carRight > obLeft;
+      const verticalOverlap = carTop < obBottom && carBottom > obTop;
+  
+      if (horizontalOverlap && verticalOverlap) {
+        spawnExplosion(car.x, car.y, car.width, car.height);
+        setTimeout(setGameOver, 100);
+      }
     });
 }
 

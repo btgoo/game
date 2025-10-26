@@ -38,8 +38,8 @@ let explosions = [];
 
 let scaleRatio = null;
 let backgroundX = 0; 
-let gameSpeed = 2;
-let speedIncreaseRate = 0.00001 ;
+let gameSpeed = 3;
+let speedIncreaseRate = 0.0001;
 
 let gameRunning = false;
 let gameOver = false;
@@ -244,8 +244,8 @@ function checkCollisions() {
         const verticalOverlap = carTop < obBottom && carBottom > obTop;
     
         if (horizontalOverlap && verticalOverlap) {
-            spawnExplosion(car.x, car.y, car.width, car.height);
-            setTimeout(setGameOver, 100);
+                spawnExplosion(car.x, car.y, car.width, car.height);
+                setTimeout(setGameOver, 100);
         }
     });
 }
